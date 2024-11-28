@@ -35,7 +35,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.navigation.NavController
-
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.LaunchedEffect
 
@@ -46,15 +45,15 @@ fun CatApp(navController: NavController) {
     var randomText by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
     val context = LocalContext.current
-    val scope = rememberCoroutineScope() // Cria o escopo de corrotina
+    val scope = rememberCoroutineScope()
 
-    val randomMessages = listOf(
+    val randomMessages = remember { mutableStateListOf(
         "Este é o Arquelau, tem 20 anos e é um verdadeiro companheiro!",
         "Conheça o Vladmir, com 7 anos, pronto para encher sua vida de amor!",
         "Trump, um(a) adorável felino(a) de 12 anos, procura um lar cheio de carinho!",
         "A Ana tem 3 anos e é cheia de energia! Adote e tenha um amigo para toda a vida!",
         "Com 2 anos, Milei é o amigo perfeito para transformar seu lar em um lugar mais feliz!"
-    )
+    ) }
 
     MaterialTheme {
         Column(
@@ -65,6 +64,7 @@ fun CatApp(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            // Título
             Text(
                 text = "Adote um Gato!",
                 style = MaterialTheme.typography.headlineLarge.copy(
@@ -82,28 +82,23 @@ fun CatApp(navController: NavController) {
                     .padding(bottom = 32.dp)
             )
 
+            // Botão para buscar gatos
             Button(
                 onClick = {
                     randomText = randomMessages.random()
                     val apiKey = "live_5GxDaiLmmgOlFdJFyC7xwhF1rY8OTKLdZ1XTXshTGPsUWM5Qpy6xW6ifOqqURIWe"
-                    RetrofitInstance.api.getCat(apiKey).enqueue(object : Callback<List<Cat>> {
-                        override fun onResponse(
-                            call: Call<List<Cat>>,
-                            response: Response<List<Cat>>
-                        ) {
-                            if (response.isSuccessful) {
-                                catImage = response.body()?.firstOrNull()?.url ?: ""
-                                showShareButton = true
-                                errorMessage = ""
-                            } else {
-                                errorMessage = "Erro ao buscar imagem do gato. Tente novamente."
-                            }
-                        }
 
-                        override fun onFailure(call: Call<List<Cat>>, t: Throwable) {
+                    // Corrigido para usar coroutines com 'suspend'
+                    scope.launch {
+                        try {
+                            val cats = RetrofitInstance.api.getCat(apiKey)
+                            catImage = cats.firstOrNull()?.url ?: ""
+                            showShareButton = true
+                            errorMessage = ""
+                        } catch (e: Exception) {
                             errorMessage = "Falha na conexão. Verifique sua internet."
                         }
-                    })
+                    }
                 },
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
@@ -125,6 +120,7 @@ fun CatApp(navController: NavController) {
 
             Spacer(modifier = Modifier.height(32.dp))
 
+            // Exibe imagem do gato e texto aleatório
             if (catImage.isNotEmpty()) {
                 Card(
                     modifier = Modifier
@@ -162,6 +158,7 @@ fun CatApp(navController: NavController) {
                     }
                 }
 
+                // Botões de compartilhar e salvar imagem
                 if (showShareButton) {
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -206,6 +203,7 @@ fun CatApp(navController: NavController) {
                 }
             }
 
+            // Mensagem de erro
             if (errorMessage.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
@@ -214,6 +212,69 @@ fun CatApp(navController: NavController) {
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
+
+            // Gerenciamento das mensagens (CRUD)
+            Spacer(modifier = Modifier.height(32.dp))
+            Text(
+                text = "Gerenciar Mensagens",
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF9F7ACD)
+                ),
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            randomMessages.forEachIndexed { index, message ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = message,
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
+                    )
+
+                    IconButton(onClick = { randomMessages.removeAt(index) }) {
+                        Icon(
+                            imageVector = Icons.Filled.Refresh,
+                            contentDescription = "Remover mensagem",
+                            tint = Color.Red
+                        )
+                    }
+
+                    IconButton(onClick = {
+                        randomMessages[index] = "Mensagem atualizada!"
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Pets,
+                            contentDescription = "Editar mensagem",
+                            tint = Color(0xFF6A4E9F)
+                        )
+                    }
+                }
+            }
+
+            // Adicionar nova mensagem
+            Button(
+                onClick = {
+                    randomMessages.add("Nova mensagem!")
+                },
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(0.8f)
+                    .shadow(8.dp, RoundedCornerShape(12.dp)),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD9B7F9))
+            ) {
+                Text(
+                    text = "Adicionar Mensagem",
+                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
+                )
+            }
         }
     }
 }
+
