@@ -38,6 +38,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.LaunchedEffect
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CatApp(navController: NavController) {
     var catImage by remember { mutableStateOf("") }
@@ -46,6 +47,9 @@ fun CatApp(navController: NavController) {
     var errorMessage by remember { mutableStateOf("") }
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    // Adicionando a variável para nova mensagem
+    var newMessage by remember { mutableStateOf("") }
 
     val randomMessages = remember { mutableStateListOf(
         "Este é o Arquelau, tem 20 anos e é um verdadeiro companheiro!",
@@ -224,6 +228,39 @@ fun CatApp(navController: NavController) {
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
+            // Input de nova mensagem
+            TextField(
+                value = newMessage,
+                onValueChange = { newMessage = it },
+                label = { Text("Digite uma nova mensagem") },
+                modifier = Modifier.fillMaxWidth(0.8f),
+
+                shape = RoundedCornerShape(16.dp)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(
+                onClick = {
+                    if (newMessage.isNotBlank()) {
+                        randomMessages.add(newMessage)
+                        newMessage = "" // Limpa o campo após adicionar
+                    }
+                },
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(0.8f)
+                    .shadow(8.dp, RoundedCornerShape(12.dp)),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD9B7F9))
+            ) {
+                Text(
+                    text = "Adicionar Nova Mensagem",
+                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
+                )
+            }
+
+            // Exibição das mensagens
             randomMessages.forEachIndexed { index, message ->
                 Row(
                     modifier = Modifier
@@ -255,24 +292,6 @@ fun CatApp(navController: NavController) {
                         )
                     }
                 }
-            }
-
-            // Adicionar nova mensagem
-            Button(
-                onClick = {
-                    randomMessages.add("Nova mensagem!")
-                },
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier
-                    .padding(top = 16.dp)
-                    .fillMaxWidth(0.8f)
-                    .shadow(8.dp, RoundedCornerShape(12.dp)),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD9B7F9))
-            ) {
-                Text(
-                    text = "Adicionar Mensagem",
-                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
-                )
             }
         }
     }
