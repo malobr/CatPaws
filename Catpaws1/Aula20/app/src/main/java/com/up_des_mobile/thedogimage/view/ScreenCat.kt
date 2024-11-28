@@ -2,7 +2,7 @@ package com.up_des_mobile.thedogimage.view
 
 import saveImageToGallery
 import androidx.compose.ui.geometry.Offset
-
+import androidx.compose.ui.platform.LocalContext
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.Image
@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.font.FontWeight
@@ -35,12 +34,10 @@ import com.up_des_mobile.thedogimage.model.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import kotlinx.coroutines.Dispatchers
-import saveImageToGallery
 
-
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.LaunchedEffect
 
 @Composable
 fun CatApp(navController: NavController) {
@@ -49,6 +46,7 @@ fun CatApp(navController: NavController) {
     var randomText by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
     val context = LocalContext.current
+    val scope = rememberCoroutineScope() // Cria o escopo de corrotina
 
     val randomMessages = listOf(
         "Este é o Arquelau, tem 20 anos e é um verdadeiro companheiro!",
@@ -57,7 +55,6 @@ fun CatApp(navController: NavController) {
         "A Ana tem 3 anos e é cheia de energia! Adote e tenha um amigo para toda a vida!",
         "Com 2 anos, Milei é o amigo perfeito para transformar seu lar em um lugar mais feliz!"
     )
-
 
     MaterialTheme {
         Column(
@@ -68,7 +65,6 @@ fun CatApp(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Título com efeito neon suave
             Text(
                 text = "Adote um Gato!",
                 style = MaterialTheme.typography.headlineLarge.copy(
@@ -86,13 +82,9 @@ fun CatApp(navController: NavController) {
                     .padding(bottom = 32.dp)
             )
 
-            // Botão de buscar gato
             Button(
                 onClick = {
-                    // Atualiza a mensagem aleatória ao buscar uma nova imagem
                     randomText = randomMessages.random()
-
-                    // Faz a requisição para pegar a imagem do gato
                     val apiKey = "live_5GxDaiLmmgOlFdJFyC7xwhF1rY8OTKLdZ1XTXshTGPsUWM5Qpy6xW6ifOqqURIWe"
                     RetrofitInstance.api.getCat(apiKey).enqueue(object : Callback<List<Cat>> {
                         override fun onResponse(
@@ -102,7 +94,7 @@ fun CatApp(navController: NavController) {
                             if (response.isSuccessful) {
                                 catImage = response.body()?.firstOrNull()?.url ?: ""
                                 showShareButton = true
-                                errorMessage = "" // Limpa qualquer mensagem de erro anterior
+                                errorMessage = ""
                             } else {
                                 errorMessage = "Erro ao buscar imagem do gato. Tente novamente."
                             }
@@ -133,9 +125,7 @@ fun CatApp(navController: NavController) {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Exibe a imagem do gato com o texto aleatório, em um único card
             if (catImage.isNotEmpty()) {
-                // Card único com a imagem e texto aleatório
                 Card(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
@@ -147,7 +137,6 @@ fun CatApp(navController: NavController) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.padding(16.dp)
                     ) {
-                        // Imagem do gato
                         SubcomposeAsyncImage(
                             model = catImage,
                             contentDescription = "Imagem do gato",
@@ -162,7 +151,6 @@ fun CatApp(navController: NavController) {
                             }
                         }
 
-                        // Exibe o texto aleatório quando clicado (em roxo)
                         if (randomText.isNotEmpty()) {
                             Text(
                                 text = randomText,
@@ -174,7 +162,6 @@ fun CatApp(navController: NavController) {
                     }
                 }
 
-                // Botões de compartilhamento e salvar
                 if (showShareButton) {
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -182,7 +169,6 @@ fun CatApp(navController: NavController) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        // Botão de Compartilhar
                         Button(
                             onClick = { shareImage(catImage, context) },
                             shape = RoundedCornerShape(16.dp),
@@ -199,9 +185,12 @@ fun CatApp(navController: NavController) {
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        // Botão de Salvar Imagem
                         Button(
-                            onClick = { saveImageToGallery(catImage, context) },
+                            onClick = {
+                                scope.launch {
+                                    saveImageToGallery(catImage, context)
+                                }
+                            },
                             shape = RoundedCornerShape(16.dp),
                             modifier = Modifier
                                 .fillMaxWidth(0.8f)
@@ -213,12 +202,10 @@ fun CatApp(navController: NavController) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Text("Salvar Imagem", style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black))
                         }
-
                     }
                 }
             }
 
-            // Exibe a mensagem de erro
             if (errorMessage.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
