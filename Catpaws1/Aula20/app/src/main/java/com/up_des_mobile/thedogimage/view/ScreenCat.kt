@@ -38,6 +38,9 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.LaunchedEffect
 
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CatApp(navController: NavController) {
@@ -48,7 +51,6 @@ fun CatApp(navController: NavController) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    // Adicionando a variável para nova mensagem
     var newMessage by remember { mutableStateOf("") }
 
     val randomMessages = remember { mutableStateListOf(
@@ -59,16 +61,18 @@ fun CatApp(navController: NavController) {
         "Com 2 anos, Milei é o amigo perfeito para transformar seu lar em um lugar mais feliz!"
     ) }
 
+    val scrollState = rememberScrollState()
+
     MaterialTheme {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFFE8D6F1))
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(scrollState), // Permite scroll no conteúdo
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top // Move o conteúdo para o topo
         ) {
-            // Título
             Text(
                 text = "Adote um Gato!",
                 style = MaterialTheme.typography.headlineLarge.copy(
@@ -86,13 +90,11 @@ fun CatApp(navController: NavController) {
                     .padding(bottom = 32.dp)
             )
 
-            // Botão para buscar gatos
             Button(
                 onClick = {
                     randomText = randomMessages.random()
                     val apiKey = "live_5GxDaiLmmgOlFdJFyC7xwhF1rY8OTKLdZ1XTXshTGPsUWM5Qpy6xW6ifOqqURIWe"
 
-                    // Corrigido para usar coroutines com 'suspend'
                     scope.launch {
                         try {
                             val cats = RetrofitInstance.api.getCat(apiKey)
@@ -124,7 +126,6 @@ fun CatApp(navController: NavController) {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Exibe imagem do gato e texto aleatório
             if (catImage.isNotEmpty()) {
                 Card(
                     modifier = Modifier
@@ -162,7 +163,6 @@ fun CatApp(navController: NavController) {
                     }
                 }
 
-                // Botões de compartilhar e salvar imagem
                 if (showShareButton) {
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -207,7 +207,6 @@ fun CatApp(navController: NavController) {
                 }
             }
 
-            // Mensagem de erro
             if (errorMessage.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
@@ -217,7 +216,6 @@ fun CatApp(navController: NavController) {
                 )
             }
 
-            // Gerenciamento das mensagens (CRUD)
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = "Gerenciar Mensagens",
@@ -228,7 +226,6 @@ fun CatApp(navController: NavController) {
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            // Input de nova mensagem
             TextField(
                 value = newMessage,
                 onValueChange = { newMessage = it },
@@ -244,7 +241,7 @@ fun CatApp(navController: NavController) {
                 onClick = {
                     if (newMessage.isNotBlank()) {
                         randomMessages.add(newMessage)
-                        newMessage = "" // Limpa o campo após adicionar
+                        newMessage = ""
                     }
                 },
                 shape = RoundedCornerShape(12.dp),
@@ -260,7 +257,6 @@ fun CatApp(navController: NavController) {
                 )
             }
 
-            // Exibição das mensagens
             randomMessages.forEachIndexed { index, message ->
                 Row(
                     modifier = Modifier
