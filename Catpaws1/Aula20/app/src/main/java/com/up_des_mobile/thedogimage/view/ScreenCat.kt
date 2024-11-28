@@ -3,17 +3,24 @@ package com.up_des_mobile.thedogimage.view
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Pets
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
 import com.up_des_mobile.thedogimage.model.Cat
 import com.up_des_mobile.thedogimage.model.RetrofitInstance
 import retrofit2.Call
@@ -31,17 +38,26 @@ fun CatApp() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(Color(0xFFFCE4EC), Color(0xFFF8BBD0))
+                    )
+                )
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
+            // Título
             Text(
                 text = "Adote um Gato!",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.headlineLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF880E4F)
+                ),
                 textAlign = TextAlign.Center
             )
 
+            // Botão para buscar imagem
             Button(
                 onClick = {
                     val apiKey = "live_5GxDaiLmmgOlFdJFyC7xwhF1rY8OTKLdZ1XTXshTGPsUWM5Qpy6xW6ifOqqURIWe"
@@ -59,13 +75,20 @@ fun CatApp() {
                     })
                 },
                 shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFAD1457)),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
+                    .fillMaxWidth(0.8f)
+                    .padding(horizontal = 16.dp)
             ) {
-                Text(text = "Buscar Gato", style = MaterialTheme.typography.bodyMedium)
+                Icon(Icons.Filled.Pets, contentDescription = null, tint = Color.White)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Buscar Gato",
+                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.White)
+                )
             }
 
+            // Exibição da imagem e botão de compartilhamento
             if (catImage.isNotEmpty()) {
                 Card(
                     modifier = Modifier
@@ -78,24 +101,35 @@ fun CatApp() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.padding(16.dp)
                     ) {
-                        Image(
-                            painter = rememberImagePainter(catImage),
+                        // Imagem com animação de carregamento
+                        SubcomposeAsyncImage(
+                            model = catImage,
                             contentDescription = "Imagem do gato",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(300.dp)
-                                .padding(8.dp)
-                        )
+                        ) {
+                            SubcomposeAsyncImageContent()
+                            if (painter.state is coil.compose.AsyncImagePainter.State.Loading) {
+                                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                            }
+                        }
 
                         if (showShareButton) {
                             Button(
                                 onClick = { shareImage(catImage, context) },
                                 shape = RoundedCornerShape(16.dp),
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF880E4F)),
                                 modifier = Modifier
                                     .padding(top = 16.dp)
                                     .fillMaxWidth(0.8f)
                             ) {
-                                Text(text = "Compartilhar Gato", style = MaterialTheme.typography.bodyMedium)
+                                Icon(Icons.Filled.Share, contentDescription = null, tint = Color.White)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "Compartilhar Gato",
+                                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.White)
+                                )
                             }
                         }
                     }
