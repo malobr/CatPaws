@@ -52,14 +52,18 @@ fun CatApp(navController: NavController) {
     val scope = rememberCoroutineScope()
 
     var newMessage by remember { mutableStateOf("") }
+    var editMessageIndex by remember { mutableStateOf<Int?>(null) }
+    var editMessageText by remember { mutableStateOf("") }
 
-    val randomMessages = remember { mutableStateListOf(
-        "Este é o Arquelau, tem 20 anos e é um verdadeiro companheiro!",
-        "Conheça o Vladmir, com 7 anos, pronto para encher sua vida de amor!",
-        "Trump, um(a) adorável felino(a) de 12 anos, procura um lar cheio de carinho!",
-        "A Ana tem 3 anos e é cheia de energia! Adote e tenha um amigo para toda a vida!",
-        "Com 2 anos, Milei é o amigo perfeito para transformar seu lar em um lugar mais feliz!"
-    ) }
+    val randomMessages = remember {
+        mutableStateListOf(
+            "Este é o Arquelau, tem 20 anos e é um verdadeiro companheiro!",
+            "Conheça o Vladmir, com 7 anos, pronto para encher sua vida de amor!",
+            "Trump, um(a) adorável felino(a) de 12 anos, procura um lar cheio de carinho!",
+            "A Ana tem 3 anos e é cheia de energia! Adote e tenha um amigo para toda a vida!",
+            "Com 2 anos, Milei é o amigo perfeito para transformar seu lar em um lugar mais feliz!"
+        )
+    }
 
     val scrollState = rememberScrollState()
 
@@ -93,7 +97,8 @@ fun CatApp(navController: NavController) {
             Button(
                 onClick = {
                     randomText = randomMessages.random()
-                    val apiKey = "live_5GxDaiLmmgOlFdJFyC7xwhF1rY8OTKLdZ1XTXshTGPsUWM5Qpy6xW6ifOqqURIWe"
+                    val apiKey =
+                        "live_5GxDaiLmmgOlFdJFyC7xwhF1rY8OTKLdZ1XTXshTGPsUWM5Qpy6xW6ifOqqURIWe"
 
                     scope.launch {
                         try {
@@ -155,7 +160,11 @@ fun CatApp(navController: NavController) {
                         if (randomText.isNotEmpty()) {
                             Text(
                                 text = randomText,
-                                style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFF6A4E9F)),
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    color = Color(
+                                        0xFF6A4E9F
+                                    )
+                                ),
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.padding(top = 16.dp)
                             )
@@ -181,7 +190,10 @@ fun CatApp(navController: NavController) {
                         ) {
                             Icon(Icons.Filled.Share, contentDescription = "Compartilhar")
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Compartilhar", style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black))
+                            Text(
+                                "Compartilhar",
+                                style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
+                            )
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -201,7 +213,10 @@ fun CatApp(navController: NavController) {
                         ) {
                             Icon(Icons.Filled.Download, contentDescription = "Salvar imagem")
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Salvar Imagem", style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black))
+                            Text(
+                                "Salvar Imagem",
+                                style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
+                            )
                         }
                     }
                 }
@@ -231,7 +246,6 @@ fun CatApp(navController: NavController) {
                 onValueChange = { newMessage = it },
                 label = { Text("Digite uma nova mensagem") },
                 modifier = Modifier.fillMaxWidth(0.8f),
-
                 shape = RoundedCornerShape(16.dp)
             )
 
@@ -270,16 +284,9 @@ fun CatApp(navController: NavController) {
                         style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
                     )
 
-                    IconButton(onClick = { randomMessages.removeAt(index) }) {
-                        Icon(
-                            imageVector = Icons.Filled.Refresh,
-                            contentDescription = "Remover mensagem",
-                            tint = Color.Red
-                        )
-                    }
-
                     IconButton(onClick = {
-                        randomMessages[index] = "Mensagem atualizada!"
+                        editMessageIndex = index
+                        editMessageText = message
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Pets,
@@ -289,7 +296,46 @@ fun CatApp(navController: NavController) {
                     }
                 }
             }
+
+            editMessageIndex?.let { index ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    TextField(
+                        value = editMessageText,
+                        onValueChange = { editMessageText = it },
+                        label = { Text("Editar Mensagem") },
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        shape = RoundedCornerShape(16.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Button(
+                        onClick = {
+                            if (editMessageText.isNotBlank()) {
+                                randomMessages[index] = editMessageText
+                                editMessageIndex = null
+                                editMessageText = ""
+                            }
+                        },
+                        shape = RoundedCornerShape(12.dp),
+
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .shadow(8.dp, RoundedCornerShape(12.dp)),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD9B7F9))
+                    ) {
+                        Text(
+                            text = "Salvar Mensagem Editada",
+                            style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
+                        )
+                    }
+                }
+            }
         }
     }
 }
-
