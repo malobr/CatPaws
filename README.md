@@ -1,6 +1,6 @@
 # CatPaws - Adote um Gato! 🐾
 
-Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que permite visualizar imagens de gatos adoráveis consumindo a [The Cat API](https://thecatapi.com) e gerenciar mensagens relacionadas a eles. Com o CatPaws, você pode buscar imagens aleatórias de gatos, salvar ou compartilhar as fotos e criar mensagens personalizadas para cada imagem. Um CRUD completo foi implementado para gerenciar as mensagens associadas.
+Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que permite visualizar imagens de gatos consumindo a [The Cat API](https://thecatapi.com) e gerenciar mensagens relacionadas a eles. Com o CatPaws, você pode buscar imagens aleatórias de gatos, salvar ou compartilhar as fotos e criar mensagens personalizadas para cada imagem. Um CRUD completo foi implementado para gerenciar as mensagens associadas.
 
 ---
 
