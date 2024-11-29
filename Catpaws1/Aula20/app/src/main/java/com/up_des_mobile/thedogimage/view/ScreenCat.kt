@@ -40,6 +40,7 @@ import androidx.compose.runtime.LaunchedEffect
 
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.filled.Delete
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -161,9 +162,7 @@ fun CatApp(navController: NavController) {
                             Text(
                                 text = randomText,
                                 style = MaterialTheme.typography.bodyLarge.copy(
-                                    color = Color(
-                                        0xFF6A4E9F
-                                    )
+                                    color = Color(0xFF6A4E9F)
                                 ),
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.padding(top = 16.dp)
@@ -294,6 +293,16 @@ fun CatApp(navController: NavController) {
                             tint = Color(0xFF6A4E9F)
                         )
                     }
+
+                    IconButton(onClick = {
+                        randomMessages.removeAt(index) // Remove a mensagem
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Delete,
+                            contentDescription = "Deletar mensagem",
+                            tint = Color.Red
+                        )
+                    }
                 }
             }
 
@@ -316,21 +325,19 @@ fun CatApp(navController: NavController) {
 
                     Button(
                         onClick = {
-                            if (editMessageText.isNotBlank()) {
-                                randomMessages[index] = editMessageText
-                                editMessageIndex = null
-                                editMessageText = ""
-                            }
+                            randomMessages[index] = editMessageText
+                            editMessageIndex = null
+                            editMessageText = ""
                         },
                         shape = RoundedCornerShape(12.dp),
-
                         modifier = Modifier
+                            .padding(top = 16.dp)
                             .fillMaxWidth(0.8f)
                             .shadow(8.dp, RoundedCornerShape(12.dp)),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD9B7F9))
                     ) {
                         Text(
-                            text = "Salvar Mensagem Editada",
+                            text = "Salvar Alterações",
                             style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
                         )
                     }
