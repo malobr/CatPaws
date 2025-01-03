@@ -6,7 +6,7 @@ Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que
 
 ## Funcionalidades Principais
 
-- **Buscar imagens de gatos:** Consome a The Cat API para exibir fotos adoráveis de gatos.
+- **Buscar imagens de gatos:** Consome a The Cat API para exibir fotos dos gatos.
 - **Gerenciar mensagens:** Adicione, edite ou remova mensagens personalizadas associadas às imagens dos gatos.
 - **Compartilhar imagens:** Compartilhe as fotos diretamente com seus amigos.
 - **Salvar imagens na galeria:** Faça o download das imagens exibidas no aplicativo.
