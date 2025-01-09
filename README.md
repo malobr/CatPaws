@@ -6,23 +6,23 @@ Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que
 
 ## Funcionalidades Principais
 
-- **Buscar imagens de gatos:** Consome a The Cat API para exibir fotos dos gatos.
-- **Gerenciar mensagens:** Adicione, edite ou remova mensagens personalizadas associadas às imagens dos gatos.
-- **Compartilhar imagens:** Compartilhe as fotos diretamente com seus amigos.
-- **Salvar imagens na galeria:** Faça o download das imagens exibidas no aplicativo.
-- **Design moderno e responsivo:** Desenvolvido com **Jetpack Compose**, com um layout elegante e intuitivo.
+- ``Buscar imagens de gatos:`` Consome a The Cat API para exibir fotos dos gatos.
+- ``Gerenciar mensagens:`` Adicione, edite ou remova mensagens personalizadas associadas às imagens dos gatos.
+- ``Compartilhar imagens:`` Compartilhe as fotos diretamente com seus amigos.
+- ``Salvar imagens na galeria:`` Faça o download das imagens exibidas no aplicativo.
+- ``Design moderno e responsivo:`` Desenvolvido com **Jetpack Compose**, com um layout elegante e intuitivo.
 
 
 
 ## Tecnologias Utilizadas
 
-- **Linguagem:** Kotlin
-- **Framework:** Jetpack Compose
-- **API:** The Cat API
+- **Linguagem:** ``Kotlin``
+- **Framework:** ``Jetpack Compose``
+- **API:** ``The Cat API``
 - **Bibliotecas:** 
-  - **Coil:** Para carregamento eficiente de imagens.
-  - **Retrofit:** Para consumir a API de gatos.
-  - **Material3:** Para design e componentes modernos.
+  - ``Coil:`` Para carregamento eficiente de imagens.
+  - ``Retrofit:`` Para consumir a API de gatos.
+  - ``Material3:`` Para design e componentes modernos.
 
 
 
@@ -31,7 +31,7 @@ Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que
 ### Pré-requisitos
 
 - Android Studio instalado.
-- Chave de API da The Cat API (obtenha [aqui](https://thecatapi.com/)).
+- Chave de API da ``The Cat API`` (obtenha [aqui](https://thecatapi.com/)).
 
 ### Instalação
 
@@ -44,7 +44,7 @@ Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que
 2. Abra o projeto no Android Studio.
 
 3. Adicione sua chave de API:
-   No arquivo onde o `apiKey` é usado, substitua pelo valor da sua chave obtida no site da The Cat API.
+   No arquivo onde o `apiKey` é usado, substitua pelo valor da sua chave obtida no site da ``The Cat API``.
 
 4. Compile e execute o aplicativo no emulador ou dispositivo físico.
 
@@ -77,19 +77,19 @@ Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que
 
 ## Funcionalidades Detalhadas
 
-### 1. **Buscar Gato**
+### 1. ``Buscar Gato``
 - Botão que consome a API e exibe uma imagem aleatória.
 - Mensagens aleatórias são exibidas para cada nova imagem.
 
-### 2. **Gerenciar Mensagens**
+### 2. ``Gerenciar Mensagens``
 - Adicione novas mensagens através de um campo de texto.
 - Edite mensagens existentes com facilidade.
 - Exclua mensagens que não deseja mais usar.
 
-### 3. **Compartilhar Imagem**
+### 3. ``Compartilhar Imagem``
 - Um botão que utiliza um `Intent` para compartilhar a imagem carregada via aplicativos disponíveis no dispositivo.
 
-### 4. **Salvar Imagem**
+### 4. ``Salvar Imagem``
 - Salve imagens na galeria do dispositivo para acessá-las futuramente.
 
 
