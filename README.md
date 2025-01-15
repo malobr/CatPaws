@@ -1,10 +1,30 @@
-# CatPaws - Adote um Gato! 🐾
+<h2 id="inicio">CatPaws - Adote um Gato! 🐾</h2>
+
 
 Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que permite visualizar imagens de gatos consumindo a [The Cat API](https://thecatapi.com) e gerenciar mensagens relacionadas a eles. Com o CatPaws, você pode buscar imagens aleatórias de gatos, salvar ou compartilhar as fotos e criar mensagens personalizadas para cada imagem. Um CRUD completo foi implementado para gerenciar as mensagens associadas.
 
+<h2 id="indice">Índice</h2>
 
 
-## Funcionalidades Principais
+  **<a href="#funcionalidadesprincipais">1. Funcionalidades Principais</a>**
+
+  **<a href="#tecnologiasutilizadas">2. Tecnologias Utilizadas</a>**
+
+  **<a href="#configuracaodoprojeto">3. Configuração do Projeto</a>**
+
+  **<a href="#estruturadoprojeto">4. Estrutura do Projeto</a>**
+
+  **<a href="#funcionalidadesdetalhadas">5. Funcionalidades Detalhadas</a>**
+  
+  **<a href="#exemplodeuso">6. Exemplo de Uso</a>**
+  
+  **<a href="#melhoriasfuturas">7. Melhorias Futuras</a>**
+
+
+<h2 id="funcionalidadesprincipais">Funcionalidades Principais</h2>
+<a href="#indice">Voltar</a>
+<br>
+
 
 - ``Buscar imagens de gatos:`` Consome a The Cat API para exibir fotos dos gatos.
 - ``Gerenciar mensagens:`` Adicione, edite ou remova mensagens personalizadas associadas às imagens dos gatos.
@@ -14,7 +34,10 @@ Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que
 
 
 
-## Tecnologias Utilizadas
+<h2 id="tecnologiasutilizadas">Tecnologias Utilizadas</h2>
+<a href="#indice">Voltar</a>
+<br>
+
 
 - **Linguagem:** ``Kotlin``
 - **Framework:** ``Jetpack Compose``
@@ -26,7 +49,10 @@ Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que
 
 
 
-## Configuração do Projeto
+<h2 id="configuracaodoprojeto">Configuração do Projeto</h2>
+<a href="#indice">Voltar</a>
+<br>
+
 
 ### Pré-requisitos
 
@@ -50,7 +76,10 @@ Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que
 
 
 
-## Estrutura do Projeto
+<h2 id="estruturadoprojeto">Estrutura do Projeto</h2>
+<a href="#indice">Voltar</a>
+<br>
+
 
 ### Pacotes
 
@@ -75,7 +104,10 @@ Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que
 
 
 
-## Funcionalidades Detalhadas
+<h2 id="funcionalidadesdetalhadas">Funcionalidades Detalhadas</h2>
+<a href="#indice">Voltar</a>
+<br>
+
 
 ### 1. ``Buscar Gato``
 - Botão que consome a API e exibe uma imagem aleatória.
@@ -94,7 +126,10 @@ Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que
 
 
 
-## Exemplo de Uso
+<h2 id="exemplosdeuso">Exemplos de Uso</h2>
+<a href="#indice">Voltar</a>
+<br>
+
 
 1. Abra o aplicativo.
 2. Clique no botão "Buscar Gato" para carregar uma nova imagem.
@@ -104,10 +139,16 @@ Bem-vindo ao **CatPaws**, um aplicativo desenvolvido com **Jetpack Compose** que
 
 
 
-## Melhorias Futuras
+<h2 id="melhoriasfuturas">Melhorias Futuras</h2>
+<a href="#indice">Voltar</a>
+<br>
+
 
 - Integração com banco de dados local para salvar mensagens e imagens.
 - Sistema de autenticação para gerenciar gatos e mensagens por usuário.
 - Modo escuro para uma experiência mais confortável.
 
+
+---
+<a href="#inicio">Voltar para o inicio</a>
 
